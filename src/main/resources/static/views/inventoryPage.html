@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>메인 화면</title>
+
+    <!-- css 부분 -->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <style>
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #426687;">
+            <li class="nav-item">
+                <a class="menu-element nav-link collapsed" href="/index">
+                    <img src="/images/main.png" width="50" height="50"/>
+                    <span style="font-size: 12pt;">메인 화면</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="menu-element nav-link collapsed" href="/inventoryPage">
+                    <img src="/images/material.png" width="50" height="50"/>
+                    <span style="font-size: 12pt;">기자재 리스트</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="menu-element nav-link collapsed" href="/rentalReturnPage">
+                    <img src="/images/rent.png" width="50" height="50"/>
+                    <span style="font-size: 12pt;">수동대여 & 반납</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="menu-element nav-link collapsed" href="/userPage">
+                    <img src="/images/people.png" width="50" height="50"/>
+                    <span style="font-size: 12pt;">대여자 리스트</span>
+                </a>
+            </li>
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div style=" text-align: center; padding: 20px;">
+                <!-- Topbar -->
+                <h1 style="margin: 0 auto; padding: 20px; font-weight: bold; color: black; background-color: #F4EB99; width: max-content;">현재 시각: ...</h1>
+            </div>
+
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">기자재 목록</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header py-3">
+                                <input class="form-control" type="text" style="width: 50%; margin: 0 auto;" placeholder="기자재 이름 검색" name="searchEquipmentName" id="searchEquipmentName"><br>
+                                <button id="searchBtn" class="btn btn-primary" onclick="searchEquipmentName()">기자재 검색</button>
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#itemModal">
+                                    기자재 추가
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>이미지</th>
+                                            <th>기자재 명</th>
+                                            <th>바코드</th>
+                                            <th>취득일자</th>
+                                            <th>수량</th>
+                                            <th>카테고리</th>
+                                            <th>보관장소</th>
+                                            <th>비고</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- 팝업창 -->
+    <div class="modal fade" id="itemModal" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="itemModalLabel">기자재 정보 입력</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form 시작 -->
+                    <form id="itemForm" action="/inventoryPage/addEquipment" method="POST" enctype="multipart/form-data">
+                        <table class="table table-bordered">
+                            <tbody>
+                            <tr>
+                                <td>이미지</td>
+                                <td><input type="file" class="form-control" name="image" accept="image/*"></td>
+                            </tr>
+                            <tr>
+                                <td>바코드</td>
+                                <td><input type="number" class="form-control" name="barcode" min="0" step="1" required></td>
+                            </tr>
+                            <tr>
+                                <td>기자재명</td>
+                                <td><input type="text" class="form-control" name="equipmentName" required></td>
+                            </tr>
+                            <tr>
+                                <td>취득날짜</td>
+                                <td><input type="date" class="form-control" name="acquisitionDate" required></td>
+                            </tr>
+                            <tr>
+                                <td>수량</td>
+                                <td><input type="number" class="form-control" name="quantity" min="0" step="1" required></td>
+                            </tr>
+                            <tr>
+                                <td>카테고리</td>
+                                <td><input type="text" class="form-control" name="category"></td>
+                            </tr>
+                            <tr>
+                                <td>보관장소</td>
+                                <td><input type="text" class="form-control" name="storageLocation"></td>
+                            </tr>
+                            <tr>
+                                <td>비고</td>
+                                <td><input type="text" class="form-control" name="note"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </form>
+                    <!-- Form 끝 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" form="itemForm" class="btn btn-primary" data-bs-dismiss="modal" onclick="submitAddBtn()">저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+        async function submitAddBtn() {
+            // 폼 데이터 가져오기
+            const form = document.getElementById("itemForm");
+            const formData = new FormData(form);
+
+            try {
+                // 서버로 데이터 전송
+                const response = await fetch('/inventoryPage/addEquipment', {
+                    method: 'POST',
+                    body: formData, // formData로 파일 포함한 데이터 전송
+                });
+
+                // 서버 응답 처리
+                if (response.ok) {
+                    // 응답이 성공적이면 JSON 데이터 받기
+                    const result = await response.json();
+
+                    if (result.status === "ok") {
+                        alert("데이터가 성공적으로 저장되었습니다!");
+                    } else {
+                        alert("서버 오류: " + result.message);
+                    }
+                } else {
+                    alert("데이터 전송 중 오류가 발생했습니다.");
+                }
+            } catch (error) {
+                console.error("에러 발생:", error);
+                alert("데이터 전송 중 문제가 발생했습니다.");
+            }
+
+            // 페이지 새로고침 방지, 페이지 데이터 갱신 함수 호출
+            await postJSON();
+        }
+
+
+        // server 와 연결해 값 얻어오기
+        async function postJSON(){
+            try{
+                const response = await fetch("/inventoryPage/", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(),
+                });
+
+                const result = await response.json();
+                console.log("성공: ", result);
+
+                await createTable(result);
+            } catch (error) {
+                console.error("실패: ", error);
+            }
+        }
+
+        // table 만들어주는 ajax
+        async function createTable(response){
+            const tbody = document.getElementById("dataTable").getElementsByTagName('tbody')[0];
+
+            tbody.innerText="";
+
+            for(const data of response) {
+                const tr = document.createElement('tr');
+                const image = document.createElement('td');
+                const equipmentName = document.createElement('td');
+                const barcode = document.createElement('td');
+                const acquisitionDate = document.createElement('td');
+                const quantity = document.createElement('td');
+                const category = document.createElement('td');
+                const storageLocation = document.createElement('td');
+                const note = document.createElement('td');
+
+                // image
+                const img = document.createElement('img');
+                img.src = data.image;
+                img.style.width = '50px';
+                img.style.height = 'auto';
+
+                image.appendChild(img);
+
+                equipmentName.textContent = data.equipmentName;
+                barcode.textContent = data.barcode;
+                acquisitionDate.textContent = data.acquisitionDate;
+                quantity.textContent = data.quantity;
+                category.textContent = data.category;
+                storageLocation.textContent = data.storageLocation;
+                note.textContent = data.note;
+
+                tr.appendChild(image);
+                tr.appendChild(equipmentName);
+                tr.appendChild(barcode);
+                tr.appendChild(acquisitionDate);
+                tr.appendChild(quantity);
+                tr.appendChild(category);
+                tr.appendChild(storageLocation);
+                tr.appendChild(note);
+                tbody.appendChild(tr);
+
+            }
+
+        }
+
+        // 검색 버튼 함수
+        async function searchEquipmentName(){
+            const equipmentName = document.getElementById("searchEquipmentName").value;
+
+            // 검색어가 없으면 전체 검색
+            if(equipmentName === ""){
+                await postJSON();
+                return;
+            }
+
+            try {
+                const response = await fetch('/inventoryPage/searchEquipment?equipmentName=' + encodeURIComponent(equipmentName), {
+                    method: 'GET',
+                    headers: {
+                        "Content-Type": "application/json; charset=utf-8",
+                    },
+                    body: JSON.stringify(),
+                });
+
+                if (response.ok) {
+                    // 응답이 성공적이면 JSON 데이터 받기
+                    const result = await response.json();
+
+                    await createTable(result);
+                } else {
+                    alert("검색 중 문제가 발생했습니다..");
+                }
+            } catch (error) {
+                console.error("에러 발생:", error);
+                alert("검색 중 문제가 발생했습니다..");
+            }
+        }
+
+        // 처음 접속 시 페이지 로드
+        postJSON();
+
+    </script>
+
+</body>
+</html>
