@@ -1,0 +1,12 @@
+.rentalReturn-btn {
+    background-color: #d9d9d9;
+    color: black;
+    margin-top: 20px;
+}
+.rentalReturn-btn:hover {
+    color: black;
+    background-color: #b2b2b2;
+}
+.menu-element:hover {
+    background-color: #689DCF;
+}

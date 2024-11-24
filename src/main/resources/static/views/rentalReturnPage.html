@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>대여 & 반납 페이지</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!--메뉴와 버튼 hoverevent-->
+    <link href="css/hoverevents.css" rel="stylesheet">
+
+    <!--  input:type="number" 의 버튼 삭제  -->
+    <style>
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+
+    <div id="wrapper">
+        <!-- MenuBar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #426687;">
+            <li class="nav-item">
+                <a class="menu-element nav-link collapsed" href="/index">
+                    <img src="/images/main.png" width="50" height="50"/>
+                    <span style="font-size: 12pt;">메인 화면</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="menu-element nav-link collapsed" href="/inventoryPage">
+                    <img src="/images/material.png" width="50" height="50"/>
+                    <span style="font-size: 12pt;">기자재 리스트</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="menu-element nav-link collapsed" href="/rentalReturnPage">
+                    <img src="/images/rent.png" width="50" height="50"/>
+                    <span style="font-size: 12pt;">수동대여 & 반납</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="menu-element nav-link collapsed" href="/userPage">
+                    <img src="/images/people.png" width="50" height="50"/>
+                    <span style="font-size: 12pt;">대여자 리스트</span>
+                </a>
+            </li>
+        </ul>
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column" style="background-color: white;">
+            <div style=" text-align: center; padding: 20px;">
+                <!-- Topbar -->
+                <h1 style="margin: 0 auto; padding: 20px; font-weight: bold; color: black; background-color: #F4EB99; width: max-content;">현재 시각: ...</h1>
+            </div>
+            <div style="height: 100%; margin-top: 15%;">
+                <div style="width: 100%; padding: 50px; text-align: center;">
+                    <input id="searchBarcode" class="form-control"  type="text" style="width: 50%; margin: 0 auto;" placeholder="기자재 바코드 번호">
+                    <button type="button" class="btn rentalReturn-btn" data-bs-toggle="modal" data-bs-target="#popupRentalReturn" onclick="getEquipmentData()">
+                        대여 & 반납
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- form table 팝업창 -->
+    <div class="modal fade" id="popupRentalReturn" tabindex="-1" aria-labelledby="itemModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="itemModalLabel">기자재 정보 입력</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Form 시작 -->
+                    <form id="itemForm" action="/inventoryPage/addEquipment" method="POST" enctype="multipart/form-data">
+                        <table class="table table-bordered" id="popupTable">
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </form>
+                    <!-- Form 끝 -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" form="itemForm" class="btn btn-primary" data-bs-dismiss="modal" onclick="saveBtn()" id="saveBtn">저장</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <!--<script src="/vendor/chart.js/Chart.min.js"></script>-->
+
+    <!-- Page level custom scripts -->
+    <script src="/js/demo/chart-area-demo.js"></script>
+    <script src="/js/demo/chart-pie-demo.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+        // server 와 연결해 barcode 전송해서 값 얻어오기
+        async function getEquipmentData(){
+            const barcode = document.getElementById("searchBarcode").value;
+
+            if(!barcode){
+                await alertShow();
+                return;
+            }
+
+            try{
+                const response = await fetch("/rentalReturnPage/getEquipmentData?barcode="+barcode, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(),
+                });
+
+                const result = await response.json();
+                console.log("성공: ", result);
+
+                if(result.status === null || result.status === "ON_FREE"){
+                    await rentalTable(result);
+                } else {
+                    await returnTable(result);
+                }
+
+            } catch (error) {
+                console.error("실패: ", error);
+                await alertShow();
+            }
+        }
+
+        // rental table 만들어주는 ajax
+        async function rentalTable(data){
+            const tbody = document.getElementById("popupTable").getElementsByTagName('tbody')[0];
+
+            tbody.innerText="";
+
+            // 이미지
+            const imageTr = document.createElement('tr');
+            const imageText = document.createElement('td');
+            const image = document.createElement('td');
+
+            imageText.textContent="이미지";
+            const img = document.createElement('img');
+            img.src = data.image;
+            img.style.width = '50px';
+            img.style.height = 'auto';
+
+            image.appendChild(img);
+            imageTr.appendChild(imageText);
+            imageTr.appendChild(img);
+
+
+            // 기자재 이름
+            const equipmentNameTr = document.createElement('tr');
+            const equipmentNameText = document.createElement('td');
+            const equipmentName = document.createElement('td');
+
+            equipmentNameText.textContent="기자재 명";
+            equipmentName.textContent=data.equipmentName;
+
+            equipmentNameTr.appendChild(equipmentNameText);
+            equipmentNameTr.appendChild(equipmentName);
+
+
+            // 바코드
+            const barcodeTr = document.createElement('tr');
+            const barcodeText = document.createElement('td');
+            const barcode = document.createElement('td');
+
+            barcodeText.textContent = "바코드";
+            barcode.textContent = data.barcode;
+
+            barcodeTr.appendChild(barcodeText);
+            barcodeTr.appendChild(barcode);
+
+
+            // 대여자 이름
+            const customerNameTr = document.createElement('tr');
+            const customerNameText = document.createElement('td');
+            const customerName = document.createElement('td');
+            const customerNameInput = document.createElement('input');
+
+            customerNameInput.type="text";
+            customerNameInput.name="customerName";
+            customerNameInput.classList.add("form-control")
+
+            customerNameText.textContent = "대여자 이름";
+            customerName.appendChild(customerNameInput);
+
+            customerNameTr.appendChild(customerNameText);
+            customerNameTr.appendChild(customerName);
+
+
+            // 대여자 학번(사번)
+            const customerIdTr = document.createElement('tr');
+            const customerIdText = document.createElement('td');
+            const customerId = document.createElement('td');
+            const customerIdInput = document.createElement('input');
+
+            customerIdInput.type="number";
+            customerIdInput.name="customerId";
+            customerIdInput.classList.add("form-control")
+
+            customerIdText.textContent = "대여자 학번(사번)";
+            customerId.appendChild(customerIdInput);
+
+            customerIdTr.appendChild(customerIdText);
+            customerIdTr.appendChild(customerId);
+
+
+            // 대여 날짜
+            const rentalDateTr = document.createElement('tr');
+            const rentalDateText = document.createElement('td');
+            const rentalDate = document.createElement('td');
+            const rentalDateInput = document.createElement('input');
+
+            rentalDateInput.type="date";
+            rentalDateInput.name="rentalDate";
+            rentalDateInput.classList.add("form-control")
+
+            rentalDateText.textContent = "대여 날짜";
+            rentalDate.append(rentalDateInput);
+
+            rentalDateTr.appendChild(rentalDateText);
+            rentalDateTr.appendChild(rentalDate);
+
+
+            // 반납 예정 날짜
+            const returnDateTr = document.createElement('tr');
+            const returnDateText = document.createElement('td');
+            const returnDate = document.createElement('td');
+            const returnDateInput = document.createElement('input');
+
+            returnDateInput.type="date";
+            returnDateInput.name="returnDate";
+            returnDateInput.classList.add("form-control")
+
+            returnDateText.textContent = "반납 예정 날짜";
+            returnDate.append(returnDateInput);
+
+            returnDateTr.appendChild(returnDateText);
+            returnDateTr.appendChild(returnDate);
+
+
+            // 비고
+            const noteTr = document.createElement('tr');
+            const noteText = document.createElement('td');
+            const note = document.createElement('td');
+
+            noteText.textContent = "비고";
+
+            note.textContent = data.note;
+
+            noteTr.appendChild(noteText);
+            noteTr.appendChild(note);
+
+
+            // table body 에 추가
+            tbody.appendChild(imageTr);
+            tbody.appendChild(equipmentNameTr);
+            tbody.appendChild(barcodeTr);
+            tbody.appendChild(customerNameTr);
+            tbody.appendChild(customerIdTr);
+            tbody.appendChild(rentalDateTr);
+            tbody.appendChild(returnDateTr);
+            tbody.appendChild(noteTr);
+
+
+            const saveBtn = document.getElementById("saveBtn");
+            saveBtn.style.display = "block";
+
+        }
+
+        // return table 만들어주는 ajax
+        async function returnTable(data){
+            const tbody = document.getElementById("popupTable").getElementsByTagName('tbody')[0];
+
+            tbody.innerText="";
+
+            // 이미지
+            const imageTr = document.createElement('tr');
+            const imageText = document.createElement('td');
+            const image = document.createElement('td');
+
+            imageText.textContent="이미지";
+            const img = document.createElement('img');
+            img.src = data.image;
+            img.style.width = '50px';
+            img.style.height = 'auto';
+
+            image.appendChild(img);
+            imageTr.appendChild(imageText);
+            imageTr.appendChild(img);
+
+
+            // 기자재 이름
+            const equipmentNameTr = document.createElement('tr');
+            const equipmentNameText = document.createElement('td');
+            const equipmentName = document.createElement('td');
+
+            equipmentNameText.textContent="기자재 명";
+            equipmentName.textContent=data.equipmentName;
+
+            equipmentNameTr.appendChild(equipmentNameText);
+            equipmentNameTr.appendChild(equipmentName);
+
+
+            // 바코드
+            const barcodeTr = document.createElement('tr');
+            const barcodeText = document.createElement('td');
+            const barcode = document.createElement('td');
+
+            barcodeText.textContent = "바코드";
+            barcode.textContent = data.barcode;
+
+            barcodeTr.appendChild(barcodeText);
+            barcodeTr.appendChild(barcode);
+
+
+            // 대여자 이름
+            const customerNameTr = document.createElement('tr');
+            const customerNameText = document.createElement('td');
+            const customerName = document.createElement('td');
+            const customerNameInput = document.createElement('input');
+
+            customerNameInput.type="text";
+            customerNameInput.name="customerName";
+            customerNameInput.classList.add("form-control")
+
+            customerNameText.textContent = "대여자 이름";
+            customerName.appendChild(customerNameInput);
+
+            customerNameTr.appendChild(customerNameText);
+            customerNameTr.appendChild(customerName);
+
+
+            // 대여자 학번(사번)
+            const customerIdTr = document.createElement('tr');
+            const customerIdText = document.createElement('td');
+            const customerId = document.createElement('td');
+            const customerIdInput = document.createElement('input');
+
+            customerIdInput.type="number";
+            customerIdInput.name="customerId";
+            customerIdInput.classList.add("form-control")
+
+            customerIdText.textContent = "대여자 학번(사번)";
+            customerId.appendChild(customerIdInput);
+
+            customerIdTr.appendChild(customerIdText);
+            customerIdTr.appendChild(customerId);
+
+
+            // 대여 날짜
+            const rentalDateTr = document.createElement('tr');
+            const rentalDateText = document.createElement('td');
+            const rentalDate = document.createElement('td');
+            const rentalDateInput = document.createElement('input');
+
+            rentalDateInput.type="date";
+            rentalDateInput.name="rentalDate";
+            rentalDateInput.classList.add("form-control")
+
+            rentalDateText.textContent = "대여 날짜";
+            rentalDate.append(rentalDateInput);
+
+            rentalDateTr.appendChild(rentalDateText);
+            rentalDateTr.appendChild(rentalDate);
+
+
+            // 반납 예정 날짜
+            const returnDateTr = document.createElement('tr');
+            const returnDateText = document.createElement('td');
+            const returnDate = document.createElement('td');
+            const returnDateInput = document.createElement('input');
+
+            returnDateInput.type="date";
+            returnDateInput.name="returnDate";
+            returnDateInput.classList.add("form-control")
+
+            returnDateText.textContent = "반납 예정 날짜";
+            returnDate.append(returnDateInput);
+
+            returnDateTr.appendChild(returnDateText);
+            returnDateTr.appendChild(returnDate);
+
+
+            // 비고
+            const noteTr = document.createElement('tr');
+            const noteText = document.createElement('td');
+            const note = document.createElement('td');
+
+            noteText.textContent = "비고";
+
+            note.textContent = data.note;
+
+            noteTr.appendChild(noteText);
+            noteTr.appendChild(note);
+
+
+            // table body 에 추가
+            tbody.appendChild(imageTr);
+            tbody.appendChild(equipmentNameTr);
+            tbody.appendChild(barcodeTr);
+            tbody.appendChild(customerNameTr);
+            tbody.appendChild(customerIdTr);
+            tbody.appendChild(rentalDateTr);
+            tbody.appendChild(returnDateTr);
+            tbody.appendChild(noteTr);
+
+
+            const saveBtn = document.getElementById("saveBtn");
+            saveBtn.style.display = "block";
+
+        }
+
+        // 경고 메시지로 변환해 보여주기
+        async function alertShow(){
+            const tbody = document.getElementById("popupTable").getElementsByTagName('tbody')[0];
+
+            tbody.innerHTML="<td>바코드 번호를 확인해주세요.</td>"
+
+            const saveBtn = document.getElementById("saveBtn");
+            saveBtn.style.display = "none";
+        }
+
+    </script>
+
+</body>
+
+</html>

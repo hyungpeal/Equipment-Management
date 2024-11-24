@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>메인 화면</title>
+
+    <!-- css 부분 -->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+
+</head>
+
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #426687;">
+            <li class="nav-item">
+                    <a class="menu-element nav-link collapsed" href="/index">
+                        <img src="/images/main.png" width="50" height="50"/>
+                        <span style="font-size: 12pt;">메인 화면</span>
+                    </a>
+            </li>
+            <li class="nav-item">
+                <a class="menu-element nav-link collapsed" href="/inventoryPage">
+                    <img src="/images/material.png" width="50" height="50"/>
+                    <span style="font-size: 12pt;">기자재 리스트</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="menu-element nav-link collapsed" href="/rentalReturnPage">
+                    <img src="/images/rent.png" width="50" height="50"/>
+                    <span style="font-size: 12pt;">수동대여 & 반납</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="menu-element nav-link collapsed" href="/userPage">
+                    <img src="/images/people.png" width="50" height="50"/>
+                    <span style="font-size: 12pt;">대여자 리스트</span>
+                </a>
+            </li>
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div style=" text-align: center; padding: 20px;">
+                <!-- Topbar -->
+                <h1 style="margin: 0 auto; padding: 20px; font-weight: bold; color: black; background-color: #F4EB99; width: max-content;">현재 시각: ...</h1>
+            </div>
+
+            <!-- Main Content -->
+            <div id="content">
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">대여자 목록</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>성함</th>
+                                            <th>기자재 명</th>
+                                            <th>바코드</th>
+                                            <th>대여 일자</th>
+                                            <th>반납 일자</th>
+                                            <th>미납일</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>홍길동</td>
+                                            <td>노트북</td>
+                                            <td>11111111</td>
+                                            <td>2024-09-21</td>
+                                            <td>2024-11-21</td>
+                                            <td>D+..</td>
+                                        </tr>
+                                        <tr>
+                                            <td>엄준식</td>
+                                            <td>갤럭시 탭</td>
+                                            <td>22222222</td>
+                                            <td>2024-09-01</td>
+                                            <td>2024-11-01</td>
+                                            <td>D+..</td>
+                                        </tr>
+                                        <tr>
+                                            <td>이돌쇠</td>
+                                            <td>파티션</td>
+                                            <td>33333333</td>
+                                            <td>2024-09-13</td>
+                                            <td>2024-11-13</td>
+                                            <td>D+..</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- End of Main Content -->
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+    <!-- Bootstrap core JavaScript-->
+    <script src="/vendor/jquery/jquery.min.js"></script>
+    <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="/js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="/js/demo/datatables-demo.js"></script>
+
+</body>
+</html>
