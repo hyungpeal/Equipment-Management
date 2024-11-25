@@ -33,12 +33,12 @@ public class RentalReturnRestController {
         return dto;
     }
 
-//    @PostMapping("/")
-//    public ResponseEntity<Rental> rentalEquipment(@RequestBody RentalDTO rentalDTO) {
-//
-//        Rental rental = rentalReturnService.rentalEquipment(rentalDTO);
-//
-//        return ResponseEntity.ok(rental);
-//    }
+    @PostMapping("/")
+    public ResponseEntity<Rental> rentalEquipment(@RequestBody RentalDTO rentalDTO) {
+
+        Rental rental = rentalReturnService.rentalEquipment(rentalDTO);
+
+        return ResponseEntity.ok(rental);
+    }
 
 }

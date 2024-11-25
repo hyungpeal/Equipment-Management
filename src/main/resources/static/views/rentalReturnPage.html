@@ -152,6 +152,7 @@
 
                 if(result.status === null || result.status === "ON_FREE"){
                     await rentalTable(result);
+                    console.log("rental table 실행")
                 } else {
                     await returnTable(result);
                 }
@@ -240,6 +241,23 @@
 
             customerIdTr.appendChild(customerIdText);
             customerIdTr.appendChild(customerId);
+
+
+            // 전화번호
+            const customerPhoneTr = document.createElement('tr');
+            const customerPhoneText = document.createElement('td');
+            const customerPhone = document.createElement('td');
+            const customerPhoneInput = document.createElement('input');
+
+            customerPhoneInput.type="text";
+            customerPhoneInput.name="customerPhone";
+            customerPhoneInput.classList.add("form-control")
+
+            customerPhoneText.textContent = "전화번호";
+            customerPhone.appendChild(customerPhoneInput);
+
+            customerPhoneTr.appendChild(customerPhoneText);
+            customerPhoneTr.appendChild(customerPhone);
 
 
             // 대여 날짜
@@ -438,6 +456,7 @@
             tbody.appendChild(barcodeTr);
             tbody.appendChild(customerNameTr);
             tbody.appendChild(customerIdTr);
+            tbody.appendChild(customerPhoneTr);
             tbody.appendChild(rentalDateTr);
             tbody.appendChild(returnDateTr);
             tbody.appendChild(noteTr);

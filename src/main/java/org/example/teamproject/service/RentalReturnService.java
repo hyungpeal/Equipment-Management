@@ -23,37 +23,39 @@ public class RentalReturnService {
     @Autowired
     RentalRepository rentalRepository;
 
-//    @Transactional
-//    public org.example.teamproject.entity.Rental rentalEquipment(RentalDTO rentalDTO) {
-//        // Equipment 조회 및 상태 변경
-//        Equipment equipment = equipmentRepository.findById(barcode)
-//                .orElseThrow(() -> new RuntimeException("Equipment not found"));
-//        if (equipment.getStatus() != Status.ON_FREE) {
-//            throw new RuntimeException("Equipment is already rented");
-//        }
-//        equipment.setStatus(Status.ON_RENTAL);
-//        equipmentRepository.save(equipment);
-//
-//        // Customer 조회 또는 생성
-//        Customer customer = customerRepository.findByCustomerId(customerId)
-//                .orElseGet(() -> customerRepository.save(
-//                        Customer.builder()
-//                                .customerName(customerId)
-//                                .customerPhone("UNKNOWN") // 기본값
-//                                .status(Status.ON_RENTAL)
-//                                .build()
-//                ));
-//
-//        // Rental 저장
-//        org.example.teamproject.entity.Rental rental = org.example.teamproject.entity.Rental.builder()
-//                .customer(customer)
-//                .equipment(equipment)
-//                .rentalDate(rentalDate)
-//                .returnDate(returnDate)
-//                .build();
-//
-//        return this.rentalRepository.save(rental);
-//    }
+    @Transactional
+    public org.example.teamproject.entity.Rental rentalEquipment(RentalDTO dto) {
+
+
+
+        // Equipment 조회 및 상태 변경
+        Equipment equipment = equipmentRepository.findById(dto.getBarcode())
+                .orElseThrow(() -> new RuntimeException("Equipment not found"));
+        if (equipment.getStatus() != Status.ON_FREE) {
+            throw new RuntimeException("Equipment is already rented");
+        }
+        equipment.setStatus(Status.ON_RENTAL);
+        equipmentRepository.save(equipment);
+
+        // Customer 조회 또는 생성
+        Customer customer = customerRepository.findByCustomerId(dto.getCustomerId())
+                .orElseGet(() -> customerRepository.save(
+                        Customer.builder()
+                                .customerName(dto.getCustomerName())
+                                .customerPhone(dto.getCustomerPhone())
+                                .build()
+                ));
+
+        // Rental 저장
+        org.example.teamproject.entity.Rental rental = org.example.teamproject.entity.Rental.builder()
+                .customer(customer)
+                .equipment(equipment)
+                .rentalDate(dto.getRentalDate())
+                .returnDate(dto.getReturnDate())
+                .build();
+
+        return this.rentalRepository.save(rental);
+    }
     
     // TODO 프론트에 table 의 phone 번호 받는 부분 추가하고 dto 에도 phone 번호 받게 만들기
 }
