@@ -4,12 +4,15 @@ import jakarta.transaction.Transactional;
 import org.example.teamproject.dto.RentalDTO;
 import org.example.teamproject.entity.Customer;
 import org.example.teamproject.entity.Equipment;
+import org.example.teamproject.entity.Rental;
 import org.example.teamproject.entity.Status;
 import org.example.teamproject.repository.CustomerRepository;
 import org.example.teamproject.repository.EquipmentRepository;
 import org.example.teamproject.repository.RentalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RentalReturnService {
@@ -24,15 +27,14 @@ public class RentalReturnService {
     RentalRepository rentalRepository;
 
     @Transactional
-    public org.example.teamproject.entity.Rental rentalEquipment(RentalDTO dto) {
-
-
+    public Rental rentalEquipment(RentalDTO dto) {
 
         // Equipment 조회 및 상태 변경
         Equipment equipment = equipmentRepository.findById(dto.getBarcode())
-                .orElseThrow(() -> new RuntimeException("Equipment not found"));
-        if (equipment.getStatus() != Status.ON_FREE) {
-            throw new RuntimeException("Equipment is already rented");
+                .orElseThrow(() -> new RuntimeException("기자재를 찾을 수 없음!"));
+        if (equipment.getStatus() == Status.ON_RENTAL) {
+            System.out.println(equipment.getStatus());
+            throw new RuntimeException("기자재가 이미 대여중!");
         }
         equipment.setStatus(Status.ON_RENTAL);
         equipmentRepository.save(equipment);
@@ -56,6 +58,8 @@ public class RentalReturnService {
 
         return this.rentalRepository.save(rental);
     }
-    
-    // TODO 프론트에 table 의 phone 번호 받는 부분 추가하고 dto 에도 phone 번호 받게 만들기
+
+    public List<Rental> findAll() {
+        return rentalRepository.findAll();
+    }
 }

@@ -81,39 +81,18 @@
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>성함</th>
-                                            <th>기자재 명</th>
                                             <th>바코드</th>
+                                            <th>기자재 명</th>
+                                            <th>성함</th>
+                                            <th>전화번호</th>
+                                            <th>학번(사번)</th>
                                             <th>대여 일자</th>
                                             <th>반납 일자</th>
-                                            <th>미납일</th>
+                                            <th>남은 기한</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>홍길동</td>
-                                            <td>노트북</td>
-                                            <td>11111111</td>
-                                            <td>2024-09-21</td>
-                                            <td>2024-11-21</td>
-                                            <td>D+..</td>
-                                        </tr>
-                                        <tr>
-                                            <td>엄준식</td>
-                                            <td>갤럭시 탭</td>
-                                            <td>22222222</td>
-                                            <td>2024-09-01</td>
-                                            <td>2024-11-01</td>
-                                            <td>D+..</td>
-                                        </tr>
-                                        <tr>
-                                            <td>이돌쇠</td>
-                                            <td>파티션</td>
-                                            <td>33333333</td>
-                                            <td>2024-09-13</td>
-                                            <td>2024-11-13</td>
-                                            <td>D+..</td>
-                                        </tr>
+
                                     </tbody>
                                 </table>
                             </div>
@@ -144,7 +123,79 @@
     <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="/js/demo/datatables-demo.js"></script>
+    <!--<script src="/js/demo/datatables-demo.js"></script>-->
+
+    <script>
+        // server 와 연결해 값 얻어오기
+        async function postJSON(){
+            try{
+                const response = await fetch("/userPage/getRentalData", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(),
+                });
+
+                const result = await response.json();
+                console.log("성공: ", result);
+
+                await createTable(result);
+            } catch (error) {
+                console.error("실패: ", error);
+            }
+        }
+
+        // table 만들어주는 ajax
+        async function createTable(response) {
+            const tbody = document.getElementById("dataTable").getElementsByTagName('tbody')[0];
+            tbody.innerText = ""; // 기존 내용을 초기화
+
+            for (const data of response) {
+                const tr = document.createElement('tr');
+                const customerName = document.createElement('td');
+                const equipmentName = document.createElement('td');
+                const barcode = document.createElement('td');
+                const customerPhone = document.createElement('td');
+                const customerId = document.createElement('td');
+                const rentalDate = document.createElement('td');
+                const returnDate = document.createElement('td');
+                const dDay = document.createElement('td');
+
+                // 값 설정
+                customerName.textContent = data.customer.customerName;
+                equipmentName.textContent = data.equipment.equipmentName;
+                barcode.textContent = data.equipment.barcode;
+                customerPhone.textContent = data.customer.customerPhone;
+                customerId.textContent = data.customer.customerId;
+                rentalDate.textContent = data.rentalDate;
+                returnDate.textContent = data.returnDate;
+
+                // dDay 계산
+                const today = new Date();
+                const returnDateObj = new Date(data.returnDate);
+                const diffTime = returnDateObj - today; // 밀리초 차이 계산
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 수로 변환
+                dDay.textContent = diffDays >= 0 ? `남은 기한: ${diffDays}일` : `연체일: ${Math.abs(diffDays)}일`;
+
+                // 행에 데이터 추가
+                tr.appendChild(barcode);
+                tr.appendChild(equipmentName);
+                tr.appendChild(customerName);
+                tr.appendChild(customerPhone);
+                tr.appendChild(customerId);
+                tr.appendChild(rentalDate);
+                tr.appendChild(returnDate);
+                tr.appendChild(dDay);
+
+                // 테이블에 추가
+                tbody.appendChild(tr);
+            }
+        }
+
+        postJSON();
+
+    </script>
 
 </body>
 </html>

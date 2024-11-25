@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,23 +22,27 @@ public class InventoryRestController {
     @Autowired
     EquipmentService service;
 
-    @GetMapping("/")
+    @GetMapping("/getInventory")
     public List<Equipment> getInventory() {
-        return service.findAll();
+        List<Equipment> tmp = service.findAll();
+
+        return tmp;
+
     }
 
     @PostMapping("/addEquipment")
-    public ResponseEntity<String> addEquipment(EquipmentDTO dto, @RequestParam("image") MultipartFile file) {
+    public ResponseEntity<String> addEquipment(EquipmentDTO dto, @RequestParam("imageFile") MultipartFile file) {
 
         // dto 받은 것을 객체에 복사
         Equipment equipment = new Equipment();
         BeanUtils.copyProperties(dto, equipment);
 
         if (file != null && !file.isEmpty()) {
-
             // 저장할 경로인 images 폴더 없으면 만들어주기
             String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/images";
             File dir = new File(uploadDir);
+
+            System.out.println("저장 경로는: " + uploadDir);
 
             if(!dir.exists()){
                 dir.mkdir();
@@ -67,8 +72,7 @@ public class InventoryRestController {
             }
 
         }
-
-        return ResponseEntity.badRequest().body("{\"status\": \"error\", \"message\": \"잘못된 요청입니다.\"}");
+        return ResponseEntity.badRequest().body("{\"status\": \"error\"}");
     }
 
     @GetMapping("/searchEquipment")

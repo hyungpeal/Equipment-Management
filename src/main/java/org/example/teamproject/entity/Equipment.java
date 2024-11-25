@@ -1,9 +1,11 @@
 package org.example.teamproject.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
+@ToString(exclude = "rentals")
 public class Equipment {
 
     @Id
@@ -38,6 +41,15 @@ public class Equipment {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    // enum 기본값 주는 함수
+    @PrePersist
+    public void setDefaultStatus(){
+        if(this.status == null){
+            this.status = Status.ON_FREE;
+        }
+    }
+
+    @JsonIgnore
     @OneToMany(mappedBy = "equipment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rental> rentals = new ArrayList<>();
 

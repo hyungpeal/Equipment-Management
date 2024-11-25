@@ -29,16 +29,22 @@ public class RentalReturnRestController {
             return null;
         }
         EquipmentDTO dto = new EquipmentDTO();
+
         BeanUtils.copyProperties(equipment, dto);
+
+        dto.setStatus(equipment.getStatus().toString());
+
         return dto;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Rental> rentalEquipment(@RequestBody RentalDTO rentalDTO) {
+    @PostMapping("/rental")
+    public ResponseEntity<?> rentalEquipment(@ModelAttribute RentalDTO rentalDTO) {
 
         Rental rental = rentalReturnService.rentalEquipment(rentalDTO);
 
-        return ResponseEntity.ok(rental);
+        System.out.println(rental.toString());
+
+        return ResponseEntity.ok().build();
     }
 
 }

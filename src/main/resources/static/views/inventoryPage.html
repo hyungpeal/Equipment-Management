@@ -139,7 +139,7 @@
                             <tbody>
                             <tr>
                                 <td>이미지</td>
-                                <td><input type="file" class="form-control" name="image" accept="image/*"></td>
+                                <td><input type="file" class="form-control" name="imageFile" accept="image/*"></td>
                             </tr>
                             <tr>
                                 <td>바코드</td>
@@ -200,6 +200,7 @@
 
     <script>
 
+        // 추가 버튼
         async function submitAddBtn() {
             // 폼 데이터 가져오기
             const form = document.getElementById("itemForm");
@@ -238,7 +239,7 @@
         // server 와 연결해 값 얻어오기
         async function postJSON(){
             try{
-                const response = await fetch("/inventoryPage/", {
+                const response = await fetch("/inventoryPage/getInventory", {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
