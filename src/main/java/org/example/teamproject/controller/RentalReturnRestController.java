@@ -1,50 +1,50 @@
 package org.example.teamproject.controller;
 
-import org.example.teamproject.dto.EquipmentDTO;
+import org.example.teamproject.dto.InventoryEquipmentDTO;
 import org.example.teamproject.dto.RentalDTO;
+import org.example.teamproject.dto.RentalReturnDataDTO;
 import org.example.teamproject.entity.Equipment;
 import org.example.teamproject.entity.Rental;
-import org.example.teamproject.service.EquipmentService;
 import org.example.teamproject.service.RentalReturnService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RequestMapping("/rentalReturnPage")
 @RestController
 public class RentalReturnRestController {
 
     @Autowired
-    EquipmentService equipmentService;
-
-    @Autowired
     RentalReturnService rentalReturnService;
 
     @GetMapping("/getEquipmentData")
-    public EquipmentDTO getEquipmentData(@RequestParam("barcode") Long barcode) {
+    public RentalReturnDataDTO getEquipmentData(@RequestParam("barcode") Long barcode) {
 
-        Equipment equipment = equipmentService.findByEquipmentBarcode(barcode);
-        if(equipment == null) {
-            return null;
-        }
-        EquipmentDTO dto = new EquipmentDTO();
+        return rentalReturnService.getEquipmentDataByBarcode(barcode);
 
-        BeanUtils.copyProperties(equipment, dto);
-
-        dto.setStatus(equipment.getStatus().toString());
-
-        return dto;
     }
 
-    @PostMapping("/rental")
-    public ResponseEntity<?> rentalEquipment(@ModelAttribute RentalDTO rentalDTO) {
+    @PostMapping("/rentalReturn")
+    public ResponseEntity<?> rentalEquipment(@ModelAttribute RentalReturnDataDTO rentalReturnDataDTO) {
 
-        Rental rental = rentalReturnService.rentalEquipment(rentalDTO);
+//        System.out.println(rentalReturnDataDTO.getStatus());
 
-        System.out.println(rental.toString());
+        if(rentalReturnDataDTO.getStatus().equals("ON_FREE")) {
 
-        return ResponseEntity.ok().build();
+            rentalReturnService.rentalEquipment(rentalReturnDataDTO);
+            return ResponseEntity.ok().build();
+
+        } else if(rentalReturnDataDTO.getStatus().equals("ON_RENTAL")) {
+
+            rentalReturnService.returnEquipment(rentalReturnDataDTO);
+            return ResponseEntity.ok().build();
+
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
 }

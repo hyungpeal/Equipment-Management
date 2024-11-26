@@ -19,13 +19,16 @@ public class Customer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
+    private Long customerId; // 식별 번호
 
     @Column(nullable = false)
-    private String customerName;
+    private String customerName; // 이름
 
     @Column(nullable = false)
-    private String customerPhone;
+    private String customerPhone; // 전화번호
+
+//    @Column(nullable = false, unique = true)
+//    private String customerNumber; // 학번(사번)
 
     @JsonIgnore
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)

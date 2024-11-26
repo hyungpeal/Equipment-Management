@@ -19,6 +19,7 @@ public class UserPageController {
     @GetMapping("/getRentalData")
     public List<Rental> getRentalData() {
         List<Rental> tmp = rentalReturnService.findAll();
+        System.out.println(tmp);
         return tmp;
     }
 

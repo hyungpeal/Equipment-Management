@@ -1,6 +1,6 @@
 package org.example.teamproject;
 
-import org.example.teamproject.dto.EquipmentDTO;
+import org.example.teamproject.dto.InventoryEquipmentDTO;
 import org.example.teamproject.repository.EquipmentRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.BeanUtils;
@@ -17,7 +17,7 @@ class TeamProjectApplicationTests {
     public void repositoryTest() {
         Long barcode = 11111111L;
 
-        EquipmentDTO dto = new EquipmentDTO();
+        InventoryEquipmentDTO dto = new InventoryEquipmentDTO();
 
         BeanUtils.copyProperties(equipmentRepository.findByBarcode(barcode), dto);
         System.out.println("##############" + dto.getStatus());

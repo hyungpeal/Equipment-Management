@@ -172,11 +172,15 @@
                 returnDate.textContent = data.returnDate;
 
                 // dDay 계산
-                const today = new Date();
-                const returnDateObj = new Date(data.returnDate);
-                const diffTime = returnDateObj - today; // 밀리초 차이 계산
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 수로 변환
-                dDay.textContent = diffDays >= 0 ? `남은 기한: ${diffDays}일` : `연체일: ${Math.abs(diffDays)}일`;
+                if (data.status === "ON_RETURN") {
+                    dDay.textContent = "반납완료";
+                } else {
+                    const today = new Date();
+                    const returnDateObj = new Date(data.returnDate);
+                    const diffTime = returnDateObj - today; // 밀리초 차이 계산
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 수로 변환
+                    dDay.textContent = diffDays >= 0 ? `남은 기한: ${diffDays}일` : `연체일: ${Math.abs(diffDays)}일`;
+                }
 
                 // 행에 데이터 추가
                 tr.appendChild(barcode);

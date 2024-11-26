@@ -86,7 +86,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="itemModalLabel">기자재 정보 입력</h5>
+                    <h5 class="modal-title" id="itemModalLabel">대여 & 반납</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -137,20 +137,20 @@
 
             try {
                 // 서버로 데이터 전송
-                const response = await fetch('/rentalReturnPage/rental', {
+                const response = await fetch('/rentalReturnPage/rentalReturn', {
                     method: 'POST',
                     body: formData,
                 });
 
                 // 서버 응답 처리
                 if (response.ok) {
-                    alert("데이터가 성공적으로 저장되었습니다!");
+                    alert("기자재 대여에 성공했습니다!");
                 } else {
-                    alert("데이터 전송 중 오류가 발생했습니다.");
+                    alert("기자재 대여 중 오류가 발생했습니다.");
                 }
             } catch (error) {
                 console.error("에러 발생:", error);
-                alert("데이터 전송 중 문제가 발생했습니다.");
+                alert("기자재 대여 중 문제가 발생했습니다.");
             }
         }
 
@@ -177,7 +177,6 @@
 
                 if(result.status === "ON_FREE"){
                     await rentalTable(result);
-                    console.log("rental table 실행")
                 } else {
                     await returnTable(result);
                 }
@@ -338,7 +337,6 @@
             noteTr.appendChild(noteText);
             noteTr.appendChild(note);
 
-
             // table body 에 추가
             tbody.appendChild(imageTr);
             tbody.appendChild(equipmentNameTr);
@@ -351,7 +349,20 @@
             tbody.appendChild(noteTr);
 
 
+            // hidden 속성의 status 값도 같이 전송. 안보이니 table 에 추가 할 필요 없음
+            const hiddenStatus = document.createElement('input');
+
+            hiddenStatus.type="hidden";
+            hiddenStatus.name="status";
+
+            hiddenStatus.value=data.status;
+
+            tbody.appendChild(hiddenStatus);
+
+
+            // 버튼 속성
             const rentalBtn = document.getElementById("rentalBtn");
+            rentalBtn.innerText = "대여";
             rentalBtn.style.display = "block";
 
         }
@@ -394,9 +405,16 @@
             const barcodeTr = document.createElement('tr');
             const barcodeText = document.createElement('td');
             const barcode = document.createElement('td');
+            const barcodeInput = document.createElement('input');
+
+            barcodeInput.type="number";
+            barcodeInput.value = data.barcode;
+            barcodeInput.name = "barcode";
+            barcodeInput.readOnly=true;
+            barcodeInput.classList.add("form-control");
 
             barcodeText.textContent = "바코드";
-            barcode.textContent = data.barcode;
+            barcode.appendChild(barcodeInput);
 
             barcodeTr.appendChild(barcodeText);
             barcodeTr.appendChild(barcode);
@@ -406,14 +424,9 @@
             const customerNameTr = document.createElement('tr');
             const customerNameText = document.createElement('td');
             const customerName = document.createElement('td');
-            const customerNameInput = document.createElement('input');
-
-            customerNameInput.type="text";
-            customerNameInput.name="customerName";
-            customerNameInput.classList.add("form-control")
 
             customerNameText.textContent = "대여자 이름";
-            customerName.appendChild(customerNameInput);
+            customerName.textContent = data.customerName;
 
             customerNameTr.appendChild(customerNameText);
             customerNameTr.appendChild(customerName);
@@ -423,31 +436,32 @@
             const customerIdTr = document.createElement('tr');
             const customerIdText = document.createElement('td');
             const customerId = document.createElement('td');
-            const customerIdInput = document.createElement('input');
-
-            customerIdInput.type="number";
-            customerIdInput.name="customerId";
-            customerIdInput.classList.add("form-control")
 
             customerIdText.textContent = "대여자 학번(사번)";
-            customerId.appendChild(customerIdInput);
+            customerId.textContent = data.customerId;
 
             customerIdTr.appendChild(customerIdText);
             customerIdTr.appendChild(customerId);
+
+            // 전화번호
+            const customerPhoneTr = document.createElement('tr');
+            const customerPhoneText = document.createElement('td');
+            const customerPhone = document.createElement('td');
+
+            customerPhoneText.textContent = "전화번호";
+            customerPhone.textContent = data.customerPhone;
+
+            customerPhoneTr.appendChild(customerPhoneText);
+            customerPhoneTr.appendChild(customerPhone);
 
 
             // 대여 날짜
             const rentalDateTr = document.createElement('tr');
             const rentalDateText = document.createElement('td');
             const rentalDate = document.createElement('td');
-            const rentalDateInput = document.createElement('input');
-
-            rentalDateInput.type="date";
-            rentalDateInput.name="rentalDate";
-            rentalDateInput.classList.add("form-control")
 
             rentalDateText.textContent = "대여 날짜";
-            rentalDate.append(rentalDateInput);
+            rentalDate.textContent = data.rentalDate;
 
             rentalDateTr.appendChild(rentalDateText);
             rentalDateTr.appendChild(rentalDate);
@@ -457,14 +471,9 @@
             const returnDateTr = document.createElement('tr');
             const returnDateText = document.createElement('td');
             const returnDate = document.createElement('td');
-            const returnDateInput = document.createElement('input');
-
-            returnDateInput.type="date";
-            returnDateInput.name="returnDate";
-            returnDateInput.classList.add("form-control")
 
             returnDateText.textContent = "반납 예정 날짜";
-            returnDate.append(returnDateInput);
+            returnDate.textContent = data.returnDate;
 
             returnDateTr.appendChild(returnDateText);
             returnDateTr.appendChild(returnDate);
@@ -489,12 +498,37 @@
             tbody.appendChild(barcodeTr);
             tbody.appendChild(customerNameTr);
             tbody.appendChild(customerIdTr);
+            tbody.appendChild(customerPhoneTr);
             tbody.appendChild(rentalDateTr);
             tbody.appendChild(returnDateTr);
             tbody.appendChild(noteTr);
 
 
+            // hidden 속성의 status 값도 같이 전송. 안보이니 table 에 추가 할 필요 없음
+            const hiddenStatus = document.createElement('input');
+
+            hiddenStatus.type="hidden";
+            hiddenStatus.name="status";
+
+            hiddenStatus.value=data.status;
+
+            tbody.appendChild(hiddenStatus);
+
+
+            // rentalId 도 같이 전송
+            const hiddenRentalId = document.createElement('input');
+
+            hiddenRentalId.type="hidden";
+            hiddenRentalId.name="rentalId";
+
+            hiddenRentalId.value=data.rentalId;
+
+            tbody.appendChild(hiddenRentalId);
+
+
+            // 버튼 속성
             const rentalBtn = document.getElementById("rentalBtn");
+            rentalBtn.innerText = "반납";
             rentalBtn.style.display = "block";
 
         }

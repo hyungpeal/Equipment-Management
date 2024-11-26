@@ -1,6 +1,6 @@
 package org.example.teamproject.controller;
 
-import org.example.teamproject.dto.EquipmentDTO;
+import org.example.teamproject.dto.InventoryEquipmentDTO;
 import org.example.teamproject.entity.Equipment;
 import org.example.teamproject.service.EquipmentService;
 import org.springframework.beans.BeanUtils;
@@ -11,7 +11,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -31,7 +30,7 @@ public class InventoryRestController {
     }
 
     @PostMapping("/addEquipment")
-    public ResponseEntity<String> addEquipment(EquipmentDTO dto, @RequestParam("imageFile") MultipartFile file) {
+    public ResponseEntity<String> addEquipment(InventoryEquipmentDTO dto, @RequestParam("imageFile") MultipartFile file) {
 
         // dto 받은 것을 객체에 복사
         Equipment equipment = new Equipment();

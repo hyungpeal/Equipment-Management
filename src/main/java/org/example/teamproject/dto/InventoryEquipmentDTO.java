@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class EquipmentDTO {
+public class InventoryEquipmentDTO {
 
     private Long barcode;
 
