@@ -5,6 +5,7 @@ import org.example.teamproject.entity.Equipment;
 import org.example.teamproject.service.EquipmentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +21,9 @@ public class InventoryRestController {
 
     @Autowired
     EquipmentService service;
+
+    @Value("${file.upload-dir}")
+    private String uploadDir;
 
     @GetMapping("/getInventory")
     public List<Equipment> getInventory() {
@@ -38,7 +42,7 @@ public class InventoryRestController {
 
         if (file != null && !file.isEmpty()) {
             // 저장할 경로인 images 폴더 없으면 만들어주기
-            String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/images";
+//            String uploadDir = System.getProperty("user.dir") + "/src/main/resources/static/images";
             File dir = new File(uploadDir);
 
             System.out.println("저장 경로는: " + uploadDir);
@@ -61,7 +65,7 @@ public class InventoryRestController {
                 equipment.setImage(imagePath);
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Failed to upload" + file.getOriginalFilename());
+                return ResponseEntity.badRequest().body("{\"status\": \"error\"}");
             }
 
             System.out.println("equipment: " + equipment);
