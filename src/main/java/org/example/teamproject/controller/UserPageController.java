@@ -2,6 +2,7 @@ package org.example.teamproject.controller;
 
 import org.example.teamproject.entity.Rental;
 import org.example.teamproject.service.RentalReturnService;
+import org.example.teamproject.service.UserPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,11 +15,11 @@ import java.util.List;
 public class UserPageController {
 
     @Autowired
-    RentalReturnService rentalReturnService;
+    UserPageService userPageService;
 
     @GetMapping("/getRentalData")
     public List<Rental> getRentalData() {
-        List<Rental> tmp = rentalReturnService.findAll();
+        List<Rental> tmp = userPageService.findAllByOrderByDesc();
         System.out.println(tmp);
         return tmp;
     }

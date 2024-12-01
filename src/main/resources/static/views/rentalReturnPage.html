@@ -264,7 +264,7 @@
             const customerIdInput = document.createElement('input');
 
             customerIdInput.type="number";
-            customerIdInput.name="customerId";
+            customerIdInput.name="customerNumber";
             customerIdInput.classList.add("form-control")
 
             customerIdText.textContent = "대여자 학번(사번)";
@@ -433,15 +433,15 @@
 
 
             // 대여자 학번(사번)
-            const customerIdTr = document.createElement('tr');
-            const customerIdText = document.createElement('td');
-            const customerId = document.createElement('td');
+            const customerNumberTr = document.createElement('tr');
+            const customerNumberText = document.createElement('td');
+            const customerNumber = document.createElement('td');
 
-            customerIdText.textContent = "대여자 학번(사번)";
-            customerId.textContent = data.customerId;
+            customerNumberText.textContent = "대여자 학번(사번)";
+            customerNumber.textContent = data.customerNumber;
 
-            customerIdTr.appendChild(customerIdText);
-            customerIdTr.appendChild(customerId);
+            customerNumberTr.appendChild(customerNumberText);
+            customerNumberTr.appendChild(customerNumber);
 
             // 전화번호
             const customerPhoneTr = document.createElement('tr');
@@ -497,7 +497,7 @@
             tbody.appendChild(equipmentNameTr);
             tbody.appendChild(barcodeTr);
             tbody.appendChild(customerNameTr);
-            tbody.appendChild(customerIdTr);
+            tbody.appendChild(customerNumberTr);
             tbody.appendChild(customerPhoneTr);
             tbody.appendChild(rentalDateTr);
             tbody.appendChild(returnDateTr);

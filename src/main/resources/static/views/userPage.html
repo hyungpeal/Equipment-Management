@@ -157,7 +157,7 @@
                 const equipmentName = document.createElement('td');
                 const barcode = document.createElement('td');
                 const customerPhone = document.createElement('td');
-                const customerId = document.createElement('td');
+                const customerNumber = document.createElement('td');
                 const rentalDate = document.createElement('td');
                 const returnDate = document.createElement('td');
                 const dDay = document.createElement('td');
@@ -167,7 +167,7 @@
                 equipmentName.textContent = data.equipment.equipmentName;
                 barcode.textContent = data.equipment.barcode;
                 customerPhone.textContent = data.customer.customerPhone;
-                customerId.textContent = data.customer.customerId;
+                customerNumber.textContent = data.customer.customerNumber;
                 rentalDate.textContent = data.rentalDate;
                 returnDate.textContent = data.returnDate;
 
@@ -187,7 +187,7 @@
                 tr.appendChild(equipmentName);
                 tr.appendChild(customerName);
                 tr.appendChild(customerPhone);
-                tr.appendChild(customerId);
+                tr.appendChild(customerNumber);
                 tr.appendChild(rentalDate);
                 tr.appendChild(returnDate);
                 tr.appendChild(dDay);

@@ -12,6 +12,7 @@ import java.util.List;
 import org.example.teamproject.entity.Equipment;
 import org.example.teamproject.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import org.example.teamproject.entity.Status;
@@ -32,10 +33,6 @@ public class RentalReturnService {
 
     @Autowired
     RentalRepository rentalRepository;
-
-    public List<Rental> findAll() {
-            return rentalRepository.findAll();
-        }
 
     public RentalReturnDataDTO getEquipmentDataByBarcode(Long barcode) {
         // Equipment 조회
@@ -85,9 +82,10 @@ public class RentalReturnService {
         equipmentRepository.save(equipment);
 
         // Customer 조회 또는 생성
-        Customer customer = customerRepository.findByCustomerId(dto.getCustomerId())
+        Customer customer = customerRepository.findByCustomerNumber(dto.getCustomerNumber())
                 .orElseGet(() -> customerRepository.save(
                         Customer.builder()
+                                .customerNumber(dto.getCustomerNumber())
                                 .customerName(dto.getCustomerName())
                                 .customerPhone(dto.getCustomerPhone())
                                 .build()

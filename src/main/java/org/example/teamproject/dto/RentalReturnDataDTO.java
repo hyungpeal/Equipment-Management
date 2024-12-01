@@ -23,7 +23,7 @@ public class RentalReturnDataDTO {
 
     private String returnDate;
 
-    private Long customerId;
+    private int customerNumber;
 
     private String customerName;
 

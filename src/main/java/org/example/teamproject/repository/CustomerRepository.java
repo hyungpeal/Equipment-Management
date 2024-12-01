@@ -9,6 +9,6 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     @EntityGraph(attributePaths = {"rentals"})
-    Optional<Customer> findByCustomerId(Long customerId);
+    Optional<Customer> findByCustomerNumber(int customerNumber);
 
 }

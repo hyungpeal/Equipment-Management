@@ -27,8 +27,8 @@ public class Customer {
     @Column(nullable = false)
     private String customerPhone; // 전화번호
 
-//    @Column(nullable = false, unique = true)
-//    private String customerNumber; // 학번(사번)
+    @Column(nullable = false, unique = true)
+    private int customerNumber; // 학번(사번)
 
     @JsonIgnore
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -36,9 +36,10 @@ public class Customer {
 
 
     @Builder
-    public Customer(Long customerId, String customerName, String customerPhone) {
+    public Customer(Long customerId, String customerName, String customerPhone, int customerNumber) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.customerPhone = customerPhone;
+        this.customerNumber = customerNumber;
     }
 }

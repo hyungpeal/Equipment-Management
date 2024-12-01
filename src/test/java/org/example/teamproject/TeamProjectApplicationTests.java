@@ -15,12 +15,14 @@ class TeamProjectApplicationTests {
 
     @Test
     public void repositoryTest() {
-        Long barcode = 11111111L;
+//        Long barcode = 11111111L;
+//
+//        InventoryEquipmentDTO dto = new InventoryEquipmentDTO();
+//
+//        BeanUtils.copyProperties(equipmentRepository.findByBarcode(barcode), dto);
+//        System.out.println("##############" + dto.getStatus());
 
-        InventoryEquipmentDTO dto = new InventoryEquipmentDTO();
-
-        BeanUtils.copyProperties(equipmentRepository.findByBarcode(barcode), dto);
-        System.out.println("##############" + dto.getStatus());
+        System.out.println("###################" + System.getProperty("user.name"));
     }
     /*
     TODO dto 로 값 전달받는걸 확인 했으니 html 과 controller 에서 status 에 따라 rental, return 을 정해 값 전달해주기?
