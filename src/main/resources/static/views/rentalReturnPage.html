@@ -66,10 +66,36 @@
         </ul>
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column" style="background-color: white;">
+
+            <!-- 시계 -->
             <div style=" text-align: center; padding: 20px;">
                 <!-- Topbar -->
-                <h1 style="margin: 0 auto; padding: 20px; font-weight: bold; color: black; background-color: #F4EB99; width: max-content;">현재 시각: ...</h1>
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <h1 id = "clock" style="margin: 0 auto; padding: 20px; font-weight: bold; color: black;width: max-content;"></h1>
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        <div class="topbar-divider d-none d-sm-block"></div>
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">admin</span>
+                                <img class="img-profile rounded-circle"
+                                     src="images/log.png">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
             </div>
+
             <div style="height: 100%; margin-top: 15%;">
                 <div style="width: 100%; padding: 50px; text-align: center;">
                     <input id="searchBarcode" class="form-control"  type="text" style="width: 50%; margin: 0 auto;" placeholder="기자재 바코드 번호">
@@ -549,6 +575,31 @@
             saveBtn.style.display = "none";
         }
 
+    </script>
+
+
+    <!-- 시계 실행하는 코드 -->
+    <script>
+        let Target = document.getElementById("clock");
+        function clock() {
+            let time = new Date();
+
+            let month = time.getMonth();
+            let date = time.getDate();
+            let day = time.getDay();
+            let week = ['일', '월', '화', '수', '목', '금', '토'];
+
+            let hours = time.getHours();
+            let minutes = time.getMinutes();
+            let seconds = time.getSeconds();
+
+            Target.innerText =
+                `현재시간 : `+`${month + 1}월 ${date}일 ${week[day]}요일 ` +
+                `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+
+        }
+        clock();
+        setInterval(clock, 1000); // 1초마다 실행
     </script>
 
 </body>
