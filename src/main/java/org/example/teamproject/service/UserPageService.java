@@ -40,4 +40,17 @@ public class UserPageService {
         return resultList;
     }
 
+    public List<Rental> rentalSearchAll(String keyword) {
+        List<Rental> tmp = rentalRepository.findByCustomerOrEquipmentName(keyword);
+
+        List<Rental> returns = new ArrayList<>();
+
+        for(Rental r : tmp) {
+            if (r.getStatus().equals(Status.ON_RENTAL)){
+                returns.add(r);
+            }
+        }
+
+        return returns;
+    }
 }

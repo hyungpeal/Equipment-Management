@@ -6,6 +6,7 @@ import org.example.teamproject.service.UserPageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -24,6 +25,11 @@ public class UserPageController {
         System.out.println(tmp);
 
         return tmp;
+    }
+
+    @GetMapping("/getRentalSearch")
+    public List<Rental> getRentalSearch(@RequestParam("keyword") String keyword) {
+        return userPageService.rentalSearchAll(keyword);
     }
 
 }

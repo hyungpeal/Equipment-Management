@@ -81,7 +81,7 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -102,6 +102,9 @@
                             <h6 class="m-0 font-weight-bold text-primary">대여자 목록</h6>
                         </div>
                         <div class="card-body">
+                            <div class="card-header py-3">
+                                <input class="form-control" type="text" style="width: 50%; margin: 0 auto;" placeholder="검색어를 입력하세요..." name="rentalSearch" id="rentalSearch"><br>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="rentalDataTable" width="100%" cellspacing="0">
                                     <thead>
@@ -181,6 +184,10 @@
     <!--<script src="/js/demo/datatables-demo.js"></script>-->
 
     <script>
+
+        const rentalBody = document.getElementById("rentalDataTable").getElementsByTagName('tbody')[0];
+        const returnBody = document.getElementById("returnDataTable").getElementsByTagName('tbody')[0];
+
         // server 와 연결해 값 얻어오기
         async function postJSON(){
             try{
@@ -205,12 +212,9 @@
         async function sort(result){
 
             // rental table 생성
-            const rentalBody = document.getElementById("rentalDataTable").getElementsByTagName('tbody')[0];
-            console.log(rentalBody)
             await createTable(result[0], rentalBody);
 
             // return table 생성
-            const returnBody = document.getElementById("returnDataTable").getElementsByTagName('tbody')[0];
             await createTable(result[1], returnBody);
 
         }
@@ -265,6 +269,45 @@
                 tbody.appendChild(tr);
             }
         }
+
+        // 검색
+        const rentalSearchText = document.getElementById("rentalSearch");
+
+        // 검색어 검사
+        function rentalSearchAll(keyword){
+            if (keyword.trim() === ""){
+                // 검색 값 없으면 전체 리로드(TODO 낭비라 고쳐줘야함)
+                postJSON();
+                return;
+            }
+            getRentalSearch(keyword);
+        }
+
+        // 서버에 전송해서 값 가져오기
+        async function getRentalSearch(keyword){
+            const response = await fetch('/userPage/getRentalSearch?keyword=' + encodeURIComponent(keyword),{
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+            });
+
+            if(!response.ok){
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            // 결과
+            const data = await response.json();
+            console.log("검색 값" + data);
+
+            await createTable(data, rentalBody);
+        }
+
+        // 키 입력됐을 때 실행되는 함수
+        rentalSearchText.addEventListener("input", (event) =>{
+           const keyword = event.target.value;
+           rentalSearchAll(keyword);
+        });
 
         postJSON();
 
