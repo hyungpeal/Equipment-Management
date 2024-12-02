@@ -155,7 +155,7 @@
                             </tr>
                             <tr>
                                 <td>수량</td>
-                                <td><input type="number" class="form-control" name="quantity" min="0" step="1" required></td>
+                                <td><input type="number" class="form-control" name="quantity" min="0" step="1" value="1" required></td>
                             </tr>
                             <tr>
                                 <td>카테고리</td>
@@ -220,6 +220,9 @@
 
                     if (result.status === "ok") {
                         alert("데이터가 성공적으로 저장되었습니다!");
+
+                        // 폼 초기화
+                        form.reset();
                     } else {
                         alert("서버 오류: " + result.message);
                     }

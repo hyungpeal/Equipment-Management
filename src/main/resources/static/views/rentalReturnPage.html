@@ -144,7 +144,13 @@
 
                 // 서버 응답 처리
                 if (response.ok) {
-                    alert("기자재 대여에 성공했습니다!");
+                    const result = await response.json();
+
+                    if(result.status === "rental"){
+                        alert("기자재 대여에 성공했습니다!");
+                    } else if (result.status === "return"){
+                        alert("기자재 반납에 성공했습니다!");
+                    }
                 } else {
                     alert("기자재 대여 중 오류가 발생했습니다.");
                 }

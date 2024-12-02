@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/userPage")
@@ -18,9 +19,10 @@ public class UserPageController {
     UserPageService userPageService;
 
     @GetMapping("/getRentalData")
-    public List<Rental> getRentalData() {
-        List<Rental> tmp = userPageService.findAllByOrderByDesc();
+    public List<List<Rental>> getRentalData() {
+        List<List<Rental>> tmp = userPageService.findAllByOrderByDesc();
         System.out.println(tmp);
+
         return tmp;
     }
 

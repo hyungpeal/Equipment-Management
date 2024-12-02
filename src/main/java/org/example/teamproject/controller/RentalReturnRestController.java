@@ -28,23 +28,23 @@ public class RentalReturnRestController {
     }
 
     @PostMapping("/rentalReturn")
-    public ResponseEntity<?> rentalEquipment(@ModelAttribute RentalReturnDataDTO rentalReturnDataDTO) {
+    public ResponseEntity<String> rentalEquipment(@ModelAttribute RentalReturnDataDTO rentalReturnDataDTO) {
 
 //        System.out.println(rentalReturnDataDTO.getStatus());
 
         if(rentalReturnDataDTO.getStatus().equals("ON_FREE")) {
 
             rentalReturnService.rentalEquipment(rentalReturnDataDTO);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body("{\"status\": \"rental\"}");
 
         } else if(rentalReturnDataDTO.getStatus().equals("ON_RENTAL")) {
 
             rentalReturnService.returnEquipment(rentalReturnDataDTO);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body("{\"status\": \"return\"}");
 
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body("{\"status\": \"error\"}");
     }
 
 }

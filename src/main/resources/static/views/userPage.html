@@ -60,7 +60,7 @@
         <!-- End of Sidebar -->
 
         <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content-wrapper1" class="d-flex flex-column">
             <div style=" text-align: center; padding: 20px;">
                 <!-- Topbar -->
                 <h1 style="margin: 0 auto; padding: 20px; font-weight: bold; color: black; background-color: #F4EB99; width: max-content;">현재 시각: ...</h1>
@@ -78,7 +78,7 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" id="rentalDataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>바코드</th>
@@ -99,10 +99,40 @@
                         </div>
                     </div>
 
+                    <!-- DataTales Example -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">반납자 목록</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="returnDataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>바코드</th>
+                                        <th>기자재 명</th>
+                                        <th>성함</th>
+                                        <th>전화번호</th>
+                                        <th>학번(사번)</th>
+                                        <th>대여 일자</th>
+                                        <th>반납 일자</th>
+                                        <th>남은 기한</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- /.container-fluid -->
+
             </div>
             <!-- End of Main Content -->
+
         </div>
         <!-- End of Content Wrapper -->
 
@@ -140,15 +170,29 @@
                 const result = await response.json();
                 console.log("성공: ", result);
 
-                await createTable(result);
+                await sort(result);
             } catch (error) {
                 console.error("실패: ", error);
             }
         }
 
-        // table 만들어주는 ajax
-        async function createTable(response) {
-            const tbody = document.getElementById("dataTable").getElementsByTagName('tbody')[0];
+        // rental 인지 return 인지 구분
+        async function sort(result){
+
+            // rental table 생성
+            const rentalBody = document.getElementById("rentalDataTable").getElementsByTagName('tbody')[0];
+            console.log(rentalBody)
+            await createTable(result[0], rentalBody);
+
+            // return table 생성
+            const returnBody = document.getElementById("returnDataTable").getElementsByTagName('tbody')[0];
+            await createTable(result[1], returnBody);
+
+        }
+
+        // Table 만들어주는 ajax
+        async function createTable(response, tbody) {
+
             tbody.innerText = ""; // 기존 내용을 초기화
 
             for (const data of response) {
