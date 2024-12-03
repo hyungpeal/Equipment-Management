@@ -2,6 +2,7 @@ package org.example.teamproject.repository;
 
 
 import org.example.teamproject.entity.Rental;
+import org.example.teamproject.entity.Status;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,4 +20,6 @@ public interface RentalRepository extends JpaRepository<org.example.teamproject.
             "WHERE LOWER(c.customerName) LIKE LOWER(CONCAT('%', :keyword, '%')) " +
             "   OR LOWER(e.equipmentName) LIKE LOWER(CONCAT('%', :keyword, '%'))")
     List<Rental> findByCustomerOrEquipmentName(String keyword);
+
+    List<Rental> findByStatus(Status status, Sort returnDate);
 }

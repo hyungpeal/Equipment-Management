@@ -7,7 +7,6 @@ import org.example.teamproject.entity.Rental;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 import org.example.teamproject.entity.Equipment;
 import org.example.teamproject.repository.CustomerRepository;
@@ -20,10 +19,12 @@ import org.example.teamproject.repository.EquipmentRepository;
 import org.example.teamproject.repository.RentalRepository;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RentalReturnService {
+public class RentalService {
 
     @Autowired
     EquipmentRepository equipmentRepository;
@@ -131,4 +132,28 @@ public class RentalReturnService {
 
     }
 
+    public List<Rental> getDelinquentData() {
+
+        List<Rental> result = rentalRepository.findByStatus(Status.ON_RENTAL, Sort.by(Sort.Order.asc("returnDate")));
+        List<Rental> rentals = new ArrayList<>();
+        
+        // 날짜 포멧 변경
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+
+        // 오늘 날짜
+        LocalDate today = LocalDate.now();
+
+        for (Rental r : result) {
+            // 주어진 포멧으로 Rental 안의 날짜 바꿈
+            LocalDate returnDate = LocalDate.parse(r.getReturnDate(), formatter);
+
+            // 비교해서 넘었으면 추가
+            if (returnDate.isBefore(today)) {
+                rentals.add(r);
+            }
+        }
+
+        return rentals;
+
+    }
 }

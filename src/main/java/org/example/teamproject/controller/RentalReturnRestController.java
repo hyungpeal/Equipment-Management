@@ -1,29 +1,22 @@
 package org.example.teamproject.controller;
 
-import org.example.teamproject.dto.InventoryEquipmentDTO;
-import org.example.teamproject.dto.RentalDTO;
 import org.example.teamproject.dto.RentalReturnDataDTO;
-import org.example.teamproject.entity.Equipment;
-import org.example.teamproject.entity.Rental;
-import org.example.teamproject.service.RentalReturnService;
-import org.springframework.beans.BeanUtils;
+import org.example.teamproject.service.RentalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RequestMapping("/rentalReturnPage")
 @RestController
 public class RentalReturnRestController {
 
     @Autowired
-    RentalReturnService rentalReturnService;
+    RentalService rentalService;
 
     @GetMapping("/getEquipmentData")
     public RentalReturnDataDTO getEquipmentData(@RequestParam("barcode") Long barcode) {
 
-        return rentalReturnService.getEquipmentDataByBarcode(barcode);
+        return rentalService.getEquipmentDataByBarcode(barcode);
 
     }
 
@@ -34,12 +27,12 @@ public class RentalReturnRestController {
 
         if(rentalReturnDataDTO.getStatus().equals("ON_FREE")) {
 
-            rentalReturnService.rentalEquipment(rentalReturnDataDTO);
+            rentalService.rentalEquipment(rentalReturnDataDTO);
             return ResponseEntity.ok().body("{\"status\": \"rental\"}");
 
         } else if(rentalReturnDataDTO.getStatus().equals("ON_RENTAL")) {
 
-            rentalReturnService.returnEquipment(rentalReturnDataDTO);
+            rentalService.returnEquipment(rentalReturnDataDTO);
             return ResponseEntity.ok().body("{\"status\": \"return\"}");
 
         }

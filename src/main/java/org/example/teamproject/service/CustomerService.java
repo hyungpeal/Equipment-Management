@@ -11,13 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserPageService {
+public class CustomerService {
 
     @Autowired
     RentalRepository rentalRepository;
 
     public List<List<Rental>> findAllByOrderByDesc() {
-        List<Rental> result = rentalRepository.findAll(Sort.by(Sort.Order.desc("rentalDate")));
+        List<Rental> result = rentalRepository.findAll(Sort.by(Sort.Order.asc("returnDate")));
 
         List<List<Rental>> resultList = new ArrayList<>();
 
