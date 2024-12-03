@@ -32,4 +32,9 @@ public class UserPageController {
         return userPageService.rentalSearchAll(keyword);
     }
 
+    @GetMapping("/getReturnSearch")
+    public List<Rental> getReturnSearch(@RequestParam("keyword") String keyword) {
+        return userPageService.returnSearchAll(keyword);
+    }
+
 }

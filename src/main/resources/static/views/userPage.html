@@ -115,7 +115,7 @@
                                             <th>전화번호</th>
                                             <th>학번(사번)</th>
                                             <th>대여 일자</th>
-                                            <th>반납 일자</th>
+                                            <th>반납 예정 일자</th>
                                             <th>남은 기한</th>
                                         </tr>
                                     </thead>
@@ -133,6 +133,9 @@
                             <h6 class="m-0 font-weight-bold text-primary">반납자 목록</h6>
                         </div>
                         <div class="card-body">
+                            <div class="card-header py-3">
+                                <input class="form-control" type="text" style="width: 50%; margin: 0 auto;" placeholder="검색어를 입력하세요..." name="returnSearch" id="returnSearch"><br>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="returnDataTable" width="100%" cellspacing="0">
                                     <thead>
@@ -243,6 +246,9 @@
                 customerNumber.textContent = data.customer.customerNumber;
                 rentalDate.textContent = data.rentalDate;
                 returnDate.textContent = data.returnDate;
+                if(data.status === "ON_RETURN"){
+                    returnDate.textContent = data.actualReturnDate;
+                }
 
                 // dDay 계산
                 if (data.status === "ON_RETURN") {
@@ -252,8 +258,18 @@
                     const returnDateObj = new Date(data.returnDate);
                     const diffTime = returnDateObj - today; // 밀리초 차이 계산
                     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 수로 변환
-                    dDay.textContent = diffDays >= 0 ? `남은 기한: ${diffDays}일` : `연체일: ${Math.abs(diffDays)}일`;
+
+                    if (diffDays > 0) {
+                        dDay.textContent = `남은 기한: ${diffDays}일`;
+                    } else if (diffDays === 0) {
+                        dDay.textContent = "d-Day";
+                        dDay.style.color = "orange"; // 오늘이 반납 예정일이면 주황색
+                    } else {
+                        dDay.textContent = `연체일: ${Math.abs(diffDays)}일`;
+                        dDay.style.color = "red"; // 연체일 발생 시 빨간색으로 표시
+                    }
                 }
+
 
                 // 행에 데이터 추가
                 tr.appendChild(barcode);
@@ -270,8 +286,9 @@
             }
         }
 
-        // 검색
+        // 검색바 가져오기
         const rentalSearchText = document.getElementById("rentalSearch");
+        const returnSearchText = document.getElementById("returnSearch");
 
         // 검색어 검사
         function rentalSearchAll(keyword){
@@ -281,6 +298,15 @@
                 return;
             }
             getRentalSearch(keyword);
+        }
+
+        function returnSearchAll(keyword){
+            if (keyword.trim() === ""){
+                // 검색 값 없으면 전체 리로드(TODO 낭비라 고쳐줘야함)
+                postJSON();
+                return;
+            }
+            getReturnSearch(keyword);
         }
 
         // 서버에 전송해서 값 가져오기
@@ -303,12 +329,36 @@
             await createTable(data, rentalBody);
         }
 
+        async function getReturnSearch(keyword){
+            const response = await fetch('/userPage/getReturnSearch?keyword=' + encodeURIComponent(keyword),{
+                method: 'GET',
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                },
+            });
+
+            if(!response.ok){
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            // 결과
+            const data = await response.json();
+
+            await createTable(data, returnBody);
+        }
+
         // 키 입력됐을 때 실행되는 함수
         rentalSearchText.addEventListener("input", (event) =>{
            const keyword = event.target.value;
            rentalSearchAll(keyword);
         });
 
+        returnSearchText.addEventListener("input", (event) =>{
+            const keyword = event.target.value;
+            returnSearchAll(keyword);
+        });
+
+        // 페이지 접속시 자동 로드
         postJSON();
 
     </script>
