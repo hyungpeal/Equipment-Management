@@ -4,9 +4,7 @@ import org.example.teamProject.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-@RequestMapping("/")
 @Controller
 public class MainController {
 
@@ -32,10 +30,4 @@ public class MainController {
     public String userPage() {
         return "userPage";
     }
-
-    @GetMapping("/login")
-    public String loginPage() {
-        return "loginPage";
-    }
-
 }
