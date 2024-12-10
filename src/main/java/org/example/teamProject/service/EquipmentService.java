@@ -26,8 +26,8 @@ public class EquipmentService {
         equipmentRepository.deleteAll();
     }
 
-    public List<Equipment> findByEquipmentName(String equipmentName){
-        List<Equipment> result = equipmentRepository.findByEquipmentName(equipmentName);
+    public List<Equipment> findByEquipmentName(String equipmentNameOrCategory){
+        List<Equipment> result = equipmentRepository.findByEquipmentNameOrCategory(equipmentNameOrCategory);
         return result != null ? result : Collections.emptyList();
     }
 

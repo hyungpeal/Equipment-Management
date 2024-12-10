@@ -135,9 +135,9 @@
                         </div>
                         <div class="card-body">
                             <div class="card-header py-3">
-                                <input class="form-control" type="text" style="width: 50%; margin: 0 auto;" placeholder="기자재 이름 검색" name="searchEquipmentName" id="searchEquipmentName"><br>
+                                <input class="form-control" type="text" style="width: 50%; margin: 0 auto;" placeholder="기자재 이름 검색" name="searchEquipmentNameOrCategory" id="searchEquipmentNameOrCategory"><br>
                                 <div class="text-center">
-                                    <button id="searchBtn" class="btn btn-primary" onclick="searchEquipmentName()">기자재 검색</button>
+                                    <button id="searchBtn" class="btn btn-primary" onclick="searchEquipmentNameOrCategory()">기자재 검색</button>
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#itemModal">기자재 추가</button>
                                 </div>
                             </div>
@@ -356,17 +356,18 @@
         }
 
         // 검색 버튼 함수
-        async function searchEquipmentName(){
-            const equipmentName = document.getElementById("searchEquipmentName").value;
+        async function searchEquipmentNameOrCategory(){
+            const equipmentNameOrCategory = document.getElementById("searchEquipmentNameOrCategory").value;
+            console.log(equipmentNameOrCategory);
 
             // 검색어가 없으면 전체 검색
-            if(equipmentName === ""){
+            if(equipmentNameOrCategory === ""){
                 await postJSON();
                 return;
             }
 
             try {
-                const response = await fetch('/inventoryPage/searchEquipment?equipmentName=' + encodeURIComponent(equipmentName), {
+                const response = await fetch('/inventoryPage/searchEquipment?equipmentNameOrCategory=' + encodeURIComponent(equipmentNameOrCategory), {
                     method: 'GET',
                     headers: {
                         "Content-Type": "application/json; charset=utf-8",

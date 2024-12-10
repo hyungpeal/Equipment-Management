@@ -79,8 +79,8 @@ public class InventoryRestController {
     }
 
     @GetMapping("/searchEquipment")
-    public List<Equipment> searchEquipment(@RequestParam("equipmentName") String equipmentName) {
-        return service.findByEquipmentName(equipmentName);
+    public List<Equipment> searchEquipment(@RequestParam("equipmentNameOrCategory") String equipmentNameOrCategory) {
+        return service.findByEquipmentName(equipmentNameOrCategory);
     }
 
 }
