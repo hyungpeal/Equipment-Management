@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>메인 화면</title>
+
+    <!-- css 부분 -->
+    <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+    <!--메뉴와 버튼 hoverevent-->
+    <link href="/css/hoverevents.css" rel="stylesheet">
+
+    <style>
+        #clock {
+            margin: 0 auto;
+            padding: 20px;
+            font-weight: bold;
+            color: black;
+            width: max-content;
+            font-size: calc(1rem + 1vw);
+        }
+        
+        @media screen and (max-width: 768px) {
+            #clock {
+                font-size: calc(0.8rem + 1vw);
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            #clock {
+                font-size: calc(0.7rem + 1vw);
+                padding: 10px;
+            }
+        }
+    </style>
+
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-dark accordion" id="accordionSidebar" style="background-color: #426687;">
+        <li class="nav-item">
+            <a class="menu-element nav-link collapsed" href="/index">
+                <img src="/images/main.png" width="50" height="50"/>
+                <span style="font-size: 12pt;">&nbsp;메인 화면</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="menu-element nav-link collapsed" href="/inventoryPage">
+                <img src="/images/material.png" width="50" height="50"/>
+                <span style="font-size: 12pt;">&nbsp;기자재 리스트</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="menu-element nav-link collapsed" href="/rentalReturnPage">
+                <img src="/images/rent.png" width="50" height="50"/>
+                <span style="font-size: 12pt;">&nbsp;수동대여 & 반납</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="menu-element nav-link collapsed" href="/userPage">
+                <img src="/images/people.png" width="50" height="50"/>
+                <span style="font-size: 12pt;">&nbsp;대여자 리스트</span>
+            </a>
+        </li>
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- 시계 -->
+        <div style=" text-align: center; padding: 20px;">
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <h1 id="clock"></h1>
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+                    <div class="topbar-divider d-none d-sm-block"></div>
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">admin</span>
+                            <img class="img-profile rounded-circle"
+                                 src="images/log.png">
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                             aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">대여자 목록</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-header py-3">
+                            <div class="text-center">
+                                <button class="btn btn-sm btn-primary" onclick="sortTableByColumn(rentalBody, 1)">기자재 명 정렬</button>
+                                <button class="btn btn-sm btn-primary" onclick="sortTableByColumn(rentalBody, 5)">대여 일자 정렬</button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="rentalDataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>바코드</th>
+                                    <th>기자재 명</th>
+                                    <th>성함</th>
+                                    <th>전화번호</th>
+                                    <th>학번(사번)</th>
+                                    <th>대여 일자</th>
+                                    <th>반납 예정 일자</th>
+                                    <th>남은 기한</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+<!-- Bootstrap core JavaScript-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<!--<script src="/js/demo/datatables-demo.js"></script>-->
+
+<!-- 데이터 관련 코드 -->
+<script>
+    // server 와 연결해 값 얻어오기
+    async function postJSON(){
+        try{
+            const response = await fetch("/index/getRentalData", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            const result = await response.json();
+            console.log("성공: ", result);
+
+            await createTable(result);
+        } catch (error) {
+            console.error("실패: ", error);
+        }
+    }
+
+    // Table 만들어주는 ajax
+    async function createTable(response) {
+
+        const tbody = document.getElementById("rentalDataTable").getElementsByTagName('tbody')[0];
+
+        tbody.innerText = ""; // 기존 내용을 초기화
+
+        for (const data of response) {
+            const tr = document.createElement('tr');
+            const customerName = document.createElement('td');
+            const equipmentName = document.createElement('td');
+            const barcode = document.createElement('td');
+            const customerPhone = document.createElement('td');
+            const customerNumber = document.createElement('td');
+            const rentalDate = document.createElement('td');
+            const returnDate = document.createElement('td');
+            const dDay = document.createElement('td');
+
+            // 값 설정
+            customerName.textContent = data.customer.customerName;
+            equipmentName.textContent = data.equipment.equipmentName;
+            barcode.textContent = data.equipment.barcode;
+            customerPhone.textContent = data.customer.customerPhone;
+            customerNumber.textContent = data.customer.customerNumber;
+            rentalDate.textContent = data.rentalDate;
+            returnDate.textContent = data.returnDate;
+            if(data.status === "ON_RETURN"){
+                returnDate.textContent = data.actualReturnDate;
+            }
+
+            // dDay 계산
+            if (data.status === "ON_RETURN") {
+                dDay.textContent = "반납완료";
+            } else {
+                const today = new Date();
+                const returnDateObj = new Date(data.returnDate);
+                const diffTime = returnDateObj - today; // 밀리초 차이 계산
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 일 수로 변환
+
+                if (diffDays > 0) {
+                    dDay.textContent = `남은 기한: ${diffDays}일`;
+                } else if (diffDays === 0) {
+                    dDay.textContent = "d-Day";
+                    dDay.style.color = "orange"; // 오늘이 반납 예정일이면 주황색
+                } else {
+                    dDay.textContent = `연체일: ${Math.abs(diffDays)}일`;
+                    dDay.style.color = "red"; // 연체일 발생 시 빨간색으로 표시
+                }
+            }
+
+
+            // 행에 데이터 추가
+            tr.appendChild(barcode);
+            tr.appendChild(equipmentName);
+            tr.appendChild(customerName);
+            tr.appendChild(customerPhone);
+            tr.appendChild(customerNumber);
+            tr.appendChild(rentalDate);
+            tr.appendChild(returnDate);
+            tr.appendChild(dDay);
+
+            // 테이블에 추가
+            tbody.appendChild(tr);
+        }
+    }
+
+    // 페이지 접속시 자동 로드
+    postJSON();
+
+</script>
+
+<!-- 시계 실행하는 코드 -->
+<script>
+    let Target = document.getElementById("clock");
+    function clock() {
+        let time = new Date();
+
+        let month = time.getMonth();
+        let date = time.getDate();
+        let day = time.getDay();
+        let week = ['일', '월', '화', '수', '목', '금', '토'];
+
+        let hours = time.getHours();
+        let minutes = time.getMinutes();
+        let seconds = time.getSeconds();
+
+        Target.innerText =
+            `현재시간 : `+`${month + 1}월 ${date}일 ${week[day]}요일 ` +
+            `${hours < 10 ? `0${hours}` : hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+
+    }
+    clock();
+    setInterval(clock, 1000); // 1초마다 실행
+</script>
+
+<!-- 정렬 코드 -->
+<script>
+    /**
+     * 테이블 데이터를 특정 열(column) 기준으로 정렬
+     * @param {HTMLElement} tbody - 정렬할 테이블
+     * @param {number} columnIndex - 정렬할 열의 컬럼 (0부터 시작)
+     */
+    function sortTableByColumn(tbody, columnIndex) {
+        const rows = Array.from(tbody.querySelectorAll("tr")); // 테이블 행 가져오기
+
+        // 현재 정렬 순서 확인 (기본값: ascending)
+        let ascending = tbody.getAttribute("data-sort-order") !== "descending";
+
+        // 행 데이터를 정렬
+        rows.sort((a, b) => {
+            const cellA = a.children[columnIndex].textContent.trim();
+            const cellB = b.children[columnIndex].textContent.trim();
+
+            // 숫자 데이터인 경우 비교
+            if (!isNaN(cellA) && !isNaN(cellB)) {
+                return ascending ? cellA - cellB : cellB - cellA;
+            }
+
+            // 날짜 데이터인 경우 비교
+            if (Date.parse(cellA) && Date.parse(cellB)) {
+                return ascending
+                    ? new Date(cellA) - new Date(cellB)
+                    : new Date(cellB) - new Date(cellA);
+            }
+
+            // 문자열 데이터인 경우 비교
+            return ascending
+                ? cellA.localeCompare(cellB)
+                : cellB.localeCompare(cellA);
+        });
+
+        // 정렬 순서 반대로 설정
+        tbody.setAttribute("data-sort-order", ascending ? "descending" : "ascending");
+
+        // 기존 테이블 내용을 정렬된 행으로 대체
+        tbody.innerHTML = "";
+        rows.forEach((row) => tbody.appendChild(row));
+    }
+</script>
+
+</body>
+</html>
