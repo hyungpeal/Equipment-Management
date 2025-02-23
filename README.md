@@ -66,7 +66,13 @@ Back
 </ul>
 
 ## 기획 & 설계
-<a href="https://drive.google.com/file/d/1seufwAtzI3jLEyzqY9_fAZnoSox29NLJ/view?usp=sharing">전체 시스템 설계</a><br>
-<a href="https://www.figma.com/design/BhaJw5hcDToFAqGsMA3r88/main?node-id=0-1&t=8SMGPE5hbZPxDjtm-1">초기 디자인 설계</a>
+<ul>
+<li><a href="https://drive.google.com/file/d/1seufwAtzI3jLEyzqY9_fAZnoSox29NLJ/view?usp=sharing">전체 시스템 설계</a></li>
+<li><a href="https://www.figma.com/design/BhaJw5hcDToFAqGsMA3r88/main?node-id=0-1&t=8SMGPE5hbZPxDjtm-1">초기 디자인 설계</a></li>
+<li>다운로드: https://drive.google.com/file/d/1S-bP0VBLK9NmFKPXvXYaII-OrW_lQlgb/view?usp=drive_link</li>
+</ul>
 
 ![DB](https://github.com/user-attachments/assets/fc3adc7b-801f-4b52-ba6c-c124c593b18a)
+
+## 주의점
+JDK21 이상에서 실행
