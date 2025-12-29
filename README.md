@@ -1,78 +1,141 @@
-# Equipment Management
-Problem: 학과 사무실에서 기자재를 대여, 반납 시 기록을 수기로 진행. 이로 인해 생기는 문제점들
-<ul>
-  <li>대여 및 반납 과정을 불편함</li>
-  <li>오작성 문제 발생</li>
-  <li>자료 관리의 불편함</li>
-</ul>
+# Equipment Management System
 
-Idea: "모든게 자동화 되고 전자기기를 사용하는 때 인데 편리하게 사용할 수 있는 프로그램을 만들어보자"
+학과 사무실 및 소규모 조직에서 사용하는 **기자재 대여·반납 관리 시스템**입니다.
 
-Solution: 수기 기록 방식을 웹으로 대체.
+기존 수기 관리 방식에서 발생하던 **입력 오류, 관리 누락, 조회 불편** 문제를 개선하기 위해 개발했습니다.
 
-## 주요 기능
-<ul>
-  <li><b>기자재 검색</b></li>: 기자재의 이름과 카테고리를 입력하면 그에 맞는 결과를 보여줌
-  <li><b>기자재 등록</b></li>: 기자재의 정보(바코드, 등록일자, 기자재명, 이미지 등)을 입력해 저장
-  <li><b>대여 & 반납</b></li>: 기자재의 대여 기록을 확인해 대여 또는 반납하는 기능
-  <li><b>대여자 출력</b></li>: 현재 대여중인 사람과 이미 반납을 완료한 사람들의 리스트를 출력
-  <li><b>배포</b></li>: jar 파일로 빌드 후 실행 파일로 만들어 배포
-  <li><b>DB</b></li>: 실행파일에 내장할 수 있는 SQLite를 사용
-</ul>
+Java와 Spring Boot를 기반으로 구현했으며,
 
-## 메인 로직 1. 기자재 등록
-1. 등록에 필요한 정보 정하기
-<table>
-  <tr>
-    <th scope="col" colspan="7"><b>기자재 등록 정보</b></th>
-  </tr>
-  <tr>
-    <td>바코드 번호</td>
-    <td>등록일자</td>
-    <td>카테고리</td>
-    <td>기자재명</td>
-    <td>이미지</td>
-    <td>비고</td>
-    <td>보관장소</td>
-  </tr>
-</table>
-2. 이미지는 사용자의 로컬에 저장하도록 설정
-C: 하위에 uploaded-images 폴더를 생성함
+별도의 서버 환경 없이 실행 가능한 **로컬 실행형 데스크탑 애플리케이션**을 목표로 설계했습니다.
 
-## 메인 로직 2. 다중 검색 & 정렬
-1. 기자재명과 카테고리 둘 중 어느 것을 입력해도 검색이 됨
-2. 기자재명 정렬 버튼을 통해 가나다순으로 정렬
-3. 대여일자별 정렬 버튼을 통해 날짜순으로 정렬
-4. 남은 기준 정렬 버튼을 통해 반납 기간으로 정렬
+---
 
-## 기술 스택
-Front
-<ul>
-  <li>BootStrap</li>
-</ul>
-<img alt="bootstrap" width="240" height="189" src="https://github.com/user-attachments/assets/7a3c6905-f763-44c6-9905-3250bfe83df4">
+## Project Overview
 
-Back
-<ul>
-  <li>Spring Boot & SQLite</li>
-</ul>
-<img alt="spring" width="443" height="190" src="https://github.com/user-attachments/assets/7d920280-b34b-4c02-ba10-ba250c5c394e"><img alt="sqlite" width="401" height="190" src="https://github.com/user-attachments/assets/590d790f-63b5-4603-b1cb-deaad734f995">
+- **목적**
+    
+    기자재 대여·반납 과정을 시스템화하여
+    
+    관리 효율성과 데이터 정확성을 향상시키는 것
+    
+- **개발 형태**
+    
+    개인 프로젝트
+    
+- **개발 기간**
+    
+    2024.09 – 2024.12
+    
 
-## 개발 기간
-<ul>
-  <li>
-    2024.09.11. ~ 12.10. (3개월)
-  </li>
-</ul>
+---
 
-## 기획 & 설계
-<ul>
-<li><a href="https://drive.google.com/file/d/1seufwAtzI3jLEyzqY9_fAZnoSox29NLJ/view?usp=sharing">전체 시스템 설계</a></li>
-<li><a href="https://www.figma.com/design/BhaJw5hcDToFAqGsMA3r88/main?node-id=0-1&t=8SMGPE5hbZPxDjtm-1">초기 디자인 설계</a></li>
-<li>다운로드: https://drive.google.com/file/d/1S-bP0VBLK9NmFKPXvXYaII-OrW_lQlgb/view?usp=drive_link</li>
-</ul>
+## Tech Stack
 
-![DB](https://github.com/user-attachments/assets/fc3adc7b-801f-4b52-ba6c-c124c593b18a)
+- **Language:** Java
+- **Framework:** Spring Boot
+- **Database:** SQLite
+- **Build & Run:** JAR → EXE (Launch4j)
+- **UI:** Bootstrap 기반 화면 구성
 
-## 주의점
-JDK21 이상에서 실행
+---
+
+## Key Features
+
+### 기자재 관리
+
+- 기자재 등록, 수정, 삭제 기능
+- 바코드 기반 기자재 식별 구조 설계
+- 이름 및 카테고리 기준 기자재 검색 기능
+
+### 대여·반납 관리
+
+- 기자재 대여 및 반납 처리 기능
+- 대여 상태(대여 가능 / 대여 중) 관리
+- 현재 대여 중인 기자재 및 사용자 목록 조회
+
+### 데이터 관리
+
+- SQLite 로컬 데이터베이스 사용
+- 별도 DB 서버 없이 실행 가능하도록 구성
+- 애플리케이션 종료 후에도 데이터 유지
+
+---
+
+## System Design
+
+- **Spring Boot 기반 계층 구조**
+    - Controller → Service → Repository 구조로 역할 분리
+    - 비즈니스 로직과 UI 로직 분리를 통해 유지보수성 확보
+- **Entity 설계**
+    - Equipment: 기자재 정보 및 상태 관리
+    - Rental: 대여·반납 이력 관리
+    - Customer: 대여 사용자 정보 관리
+- **상태 관리 방식**
+    - 기자재 상태를 명확히 구분하여 중복 대여 방지
+    - 대여 및 반납 시 Equipment 상태 자동 갱신
+
+---
+
+## Technical Decisions
+
+### SQLite 선택 이유
+
+- 별도의 데이터베이스 설치가 필요 없음
+- 소규모 조직 및 개인 사용 환경에 적합
+- 배포 및 유지보수 비용 최소화
+
+### Launch4j 기반 EXE 배포
+
+- JAR 파일을 Windows 실행 파일(.exe)로 변환
+- 콘솔 창 없이 GUI 애플리케이션으로 실행 가능
+- 개발 환경이 없는 사용자도 쉽게 실행 가능하도록 고려
+
+---
+
+## How to Run (Windows)
+
+본 프로젝트는 **Launch4j를 사용하여 JAR 파일을 Windows 실행 파일(.exe)로 변환**했습니다.
+
+명령어 입력 없이 실행 파일을 통해 바로 사용할 수 있습니다.
+
+### 실행 방법
+
+URL 에서 실행 파일을 다운로드 합니다.
+
+https://drive.google.com/file/d/1S-bP0VBLK9NmFKPXvXYaII-OrW_lQlgb/view?usp=drive_link
+
+1. 해당 파일을 더블 클릭하여 애플리케이션을 실행합니다.
+2. 실행 후 UI를 통해 기자재 등록, 대여 및 반납 기능을 사용할 수 있습니다.
+
+---
+
+### 실행 환경
+
+- **운영체제:** Windows
+- **Java Runtime:** JRE 설치 필요 (Java 21 이상 권장)
+- **Database:** SQLite (애플리케이션 내장, 별도 설정 불필요)
+
+---
+
+### 참고 사항
+
+- C:\ 에 SQLite DB 파일이 생성됩니다.
+- 애플리케이션 종료 후에도 데이터는 유지됩니다.
+- 최초 실행 시 Windows 보안 경고가 표시될 수 있습니다.
+
+---
+
+## What I Learned
+
+- Spring Boot 기반 애플리케이션의 전체 구조와 실행 흐름 이해
+- RDB 기반 데이터 모델링 및 JPA 활용 경험
+- 실제 사용 환경을 고려한 **로컬 실행형 시스템 설계 경험**
+- 기능 구현뿐 아니라 **배포 방식과 사용자 접근성**의 중요성 인식
+
+---
+
+## Future Improvements (Optional)
+
+- 대여 이력 통계 및 기간별 조회 기능 추가
+- 사용자 권한 분리(관리자 / 일반 사용자)
+- UI/UX 개선 및 반응형 레이아웃 적용
